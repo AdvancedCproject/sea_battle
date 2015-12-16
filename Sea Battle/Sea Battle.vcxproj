@@ -53,6 +53,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -83,6 +84,7 @@
     <ClCompile Include="MAKE_SHIP.c" />
     <ClCompile Include="PLAYER_ACT.c" />
     <ClCompile Include="MAIN.c" />
+    <ClCompile Include="SAVE_LOAD.c" />
     <ClCompile Include="START_INTERFACE.c" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +95,7 @@
     <ClInclude Include="MAKE_SHIP.h" />
     <ClInclude Include="KEYBOARD.h" />
     <ClInclude Include="PLAYER_ACT.h" />
+    <ClInclude Include="SAVE_LOAD.h" />
     <ClInclude Include="START_INTERFACE.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

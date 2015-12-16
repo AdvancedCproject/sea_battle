@@ -6,3 +6,4 @@ void SELECT_MENU();
 void MAP_CREATE();
 
 void GAME_START_INIT();
+void EXPLAIN();

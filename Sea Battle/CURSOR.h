@@ -5,7 +5,7 @@
 #ifndef _CURSOR_H_
 #define _CURSOR_H_
 
-#include <windows.h>
+#include <Windows.h>
 
 void gotoxy(int x, int y){
 	COORD CursorPosition = { x, y };

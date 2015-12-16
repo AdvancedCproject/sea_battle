@@ -1,15 +1,21 @@
 //--------------------------------------------------------
 //							PLAYER_ACT.c - 플레이어 움직임 및 공격
 //--------------------------------------------------------
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_NONSTDC_NO_DEPRECATE
+
 #include <Windows.h>
+#include <stdio.h>
 #include "PLAYER_ACT.h"
 #include "KEYBOARD.h"
 #include "MAKE_SHIP.h"
 #include "INFO.h"
+#include "ITEM.h"
 //----------------------------------------
 //							FINISH_CHECK - 게임 끝났는지 판단
 //------------------------	----------------
 void FINISH_CHECK(){					
+	FILE *fp = fopen("SEA_BATTLE.txt", "w");
 	int i, j;
 
 	for (i = 0; i < MAX; i++){			// 맵 전체를 검사
@@ -17,9 +23,17 @@ void FINISH_CHECK(){
 			if (PLAYER_WHO[i][j] == BLOCK) return;		// 블록이 존재할 시 함수 종료
 	}
 
-	if (p == &p1) PLAYER_WHO = &PLAYER1_MAP;		// 플레이어1이 이기면 왼쪽 맵을 공개
-	else if (p == &p2) PLAYER_WHO = &PLAYER2_MAP;	// 플레이어2가 이기면 오른쪽 맵을 공개
+	if (p == &p1){
+		Victory_p1++;
+		PLAYER_WHO = &PLAYER1_MAP;		// 플레이어1이 이기면 왼쪽 맵을 공개
+	}
+	else if (p == &p2){
+		Victory_p2++;
+		PLAYER_WHO = &PLAYER2_MAP;	// 플레이어2가 이기면 오른쪽 맵을 공개
+	}
 
+	fprintf(fp, "%s %d\n", P1_name, Victory_p1);
+	fprintf(fp, "%s %d", P2_name, Victory_p2);
 	// 게임이 종료된 뒤, 상대방의 남은 SHIP 위치를 보여줌
 	for (i = 0; i < MAX; i++){			
 		for (j = 0; j < MAX; j++)	{
@@ -29,7 +43,40 @@ void FINISH_CHECK(){
 			}
 		}
 	}
+	system("cls");
+	system("mode con cols=90 lines=8");
+	if (p == &p1){
+		printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n");
+		printf(" ＊  ■■      ■■■■    ■            ■   ■  ■■    ■    ■■■  ■■■  ■■■ ＊\n");
+		printf(" ＊ ■ ■      ■    ■     ■    ■    ■        ■ ■   ■    ■  ■  ■  ■  ■  ■ ＊\n");
+		printf(" ＊    ■      ■■■■      ■  ■■  ■     ■  ■  ■  ■     ■■    ■■    ■■  ＊\n");
+		printf(" ＊    ■      ■             ■■  ■■      ■  ■   ■ ■                           ＊\n");
+		printf(" ＊  ■■■    ■              ■    ■       ■  ■    ■■     ■■    ■■    ■■  ＊\n");
+		printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n");
+	}
+	else if (p == &p2){
+		printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n");
+		printf(" ＊  ■■      ■■■■    ■            ■   ■  ■■    ■    ■■■  ■■■  ■■■ ＊\n");
+		printf(" ＊ ■  ■     ■    ■     ■    ■    ■        ■ ■   ■    ■  ■  ■  ■  ■  ■ ＊\n");
+		printf(" ＊    ■      ■■■■      ■  ■■  ■     ■  ■  ■  ■     ■■    ■■    ■■  ＊\n");
+		printf(" ＊  ■        ■             ■■  ■■      ■  ■   ■ ■                           ＊\n");
+		printf(" ＊■■■■    ■              ■    ■       ■  ■    ■■     ■■    ■■    ■■  ＊\n");
+		printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n");
+	}
+	getch();
+	system("cls");
+	printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊ \n");
+	printf(" ＊■■■■■     ■      ■■■■■  ■■■■    ■■■■  ■    ■  ■■■■  ■■■ ＊ \n");
+	printf(" ＊■            ■■     ■  ■  ■  ■          ■    ■  ■    ■  ■        ■  ■ ＊ \n");
+	printf(" ＊■  ■■■   ■  ■    ■  ■  ■  ■■■■    ■    ■  ■    ■  ■■■■  ■ ■  ＊ \n");
+	printf(" ＊■      ■  ■■■■   ■      ■  ■          ■    ■  ■    ■  ■        ■  ■ ＊\n");
+	printf(" ＊■■■■■ ■      ■  ■      ■  ■■■■    ■■■■    ■■    ■■■■  ■   ■＊ \n");
+	printf(" ＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊ \n");
+	getch();
+	FINISH = TRUE;
+	return;
 
+	fclose(fp);
 }
 
 //-----------------------------------
@@ -65,11 +112,13 @@ void PLAYER_ATTACK(int x,int y){
 			PLAYER_WHO = &PLAYER2_MAP; 
 			p = &p1; p1.x = 16; p1.y = 4;
 			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("△");
+			P_ITEM = &Item_P1;
 		}
 		else if (PLAYER_WHO == &PLAYER2_MAP){
 			PLAYER_WHO = &PLAYER1_MAP;
 			p = &p2; p2.x = 4; p2.y = 4;
 			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("△");
+			P_ITEM = &Item_P2;
 		}
 	}
 }
@@ -82,7 +131,7 @@ void SHOW_EMPTY_SPACE(int x,int y){
 	if (p == &p1) Tx = x - 12;
 	else if (p == &p2) Tx = x;
 
-	if (PLAYER_WHO[y][Tx] == EMPTY){
+	if (PLAYER_WHO[y][Tx] == EMPTY || PLAYER_WHO[y][Tx] == EMPTY_SHOW){
 		PLAYER_WHO[y][Tx] = EMPTY_SHOW;
 		gotoxy((x)* 6 + 2, (y)* 3 + 1); printf("＊＊");
 		gotoxy((x)* 6 + 2, (y)* 3 + 2); printf("＊＊");
@@ -186,60 +235,95 @@ void MOVE_PLAYER(int key, int *x, int *y) {
 	int i;
 	switch (key) {
 	case LEFT:
-		if (PLAYER_WHO == &PLAYER1_MAP){
+		if (PLAYER_WHO == &PLAYER1_MAP && ITEM_CHOOSE == FALSE){
 			if (*x > 0){
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*x)--;
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 			}
 		}
-		else if (PLAYER_WHO == &PLAYER2_MAP){
+		else if (PLAYER_WHO == &PLAYER2_MAP && ITEM_CHOOSE == FALSE){
 			if (*x > 12){
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*x)--;
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 			}
 		}
+		if (ITEM_CHOOSE == TRUE)
+			CHOOSE_ITEM(key);
+		
 		break;
 
 	case RIGHT:
-		if (PLAYER_WHO == &PLAYER1_MAP){
+		if (PLAYER_WHO == &PLAYER1_MAP && ITEM_CHOOSE == FALSE){
 			if (*x < 9){
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*x)++;
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 			}
 		}
-		else if (PLAYER_WHO == &PLAYER2_MAP){
+		else if (PLAYER_WHO == &PLAYER2_MAP && ITEM_CHOOSE == FALSE){
 			if (*x < 21){
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*x)++;
 				gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 			}
 		}
+		if (ITEM_CHOOSE == TRUE)
+			CHOOSE_ITEM(key);
+
 		break;
 
 	case UP:
-		if (*y > 0){
+		if (*y > 0 && ITEM_CHOOSE == FALSE){
 			gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*y)--;
 			gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 		}
+		if (ITEM_CHOOSE == TRUE)
+			CHOOSE_ITEM(key);
+
 		break;
 
 	case DOWN:
-		if (*y < 9){
+		if (*y < 9 && ITEM_CHOOSE == FALSE){
 			gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("  "); (*y)++;
 			gotoxy((*x) * 6 + 3, (*y) * 3 + 3); printf("△");
 		}
+		if (ITEM_CHOOSE == TRUE)
+			CHOOSE_ITEM(key);
+
 		break;
 
 	case X:
-		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
-		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("▲");
-		for (i = 0; i < 20000000; i++){}
-		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
-		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("△");
-
-		if(MAKE_SHIP==TRUE) MAKE_SHIP_DRAW_ERA((*x), (*y));
 		break;
 
 	case Z:
+		if (MAKE_SHIP == FALSE && ITEM_CHOOSE == FALSE){
+			ITEM_CHOOSE = TRUE;
+			if (p == &p1){
+				gotoxy(10, 34); printf("┏━━━━━━┓");
+				gotoxy(10, 35); printf("┃            ┃ ");
+				gotoxy(10, 36); printf("┗━━━━━━┛");
+			}
+			else if (p == &p2){
+				gotoxy(((p == &p1) ? 10 : 79), 34); printf("┏━━━━━━┓");
+				gotoxy(((p == &p1) ? 10 : 79), 35); printf("┃            ┃ ");
+				gotoxy(((p == &p1) ? 10 : 79), 36); printf("┗━━━━━━┛");
+			}
+		}
+		else if (MAKE_SHIP == FALSE && ITEM_CHOOSE == TRUE && ITEM_INFO == NO_ITEM){
+			CHOOSE_ITEM(key);
+			ITEM_CHOOSE = FALSE;
+		}
+
+		if (ITEM_CHOOSE == FALSE){
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("▲");
+			for (i = 0; i < 20000000; i++){}
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("△");
+		}
+		if(MAKE_SHIP==TRUE) MAKE_SHIP_DRAW_ERA((*x), (*y));
+		
+		break;
+
+	case SPACEBAR:
 		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
 		gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("▲");
 		for (i = 0; i < 20000000; i++){}
@@ -250,10 +334,25 @@ void MOVE_PLAYER(int key, int *x, int *y) {
 			MAKE_SHIP_DRAW_ING((*x), (*y));
 			MAKE_SHIP_DRAW_COM((*x), (*y), &number);
 		}
-		else if (MAKE_SHIP == FALSE) PLAYER_ATTACK(*x, *y);
+		else if (MAKE_SHIP == FALSE && ITEM_CHOOSE == FALSE && ITEM_INFO == NO_ITEM) PLAYER_ATTACK(*x, *y);
+		else if (MAKE_SHIP == FALSE && ITEM_INFO != NO_ITEM) {
+			ITEM_TYPE(ITEM_INFO, *x, *y);
+			ITEM_INFO = NO_ITEM;
+
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("  ");
+			if (p == &p1){
+				PLAYER_WHO = &PLAYER1_MAP;
+				p = &p2; p2.x = 4; p2.y = 4;
+				P_ITEM = &Item_P2;
+			}
+			else if (p == &p2){
+				PLAYER_WHO = &PLAYER2_MAP;
+				p = &p1; p1.x = 16; p1.y = 4;
+				P_ITEM = &Item_P1;
+			}
+			gotoxy((p->x) * 6 + 3, (p->y) * 3 + 3); printf("△");
+		}
 		break;
 
-	case SPACEBAR:
-		break;
 	}
 }

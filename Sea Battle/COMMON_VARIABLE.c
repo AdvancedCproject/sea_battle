@@ -1,13 +1,17 @@
 //-----------------------------------------------------
 //					 COMMON_VARIABLE - 공통 변수, 구조체 초기화 및 선언
 //-----------------------------------------------------
+#include <Windows.h>
 #include "INFO.h"
+#include "ITEM.h"
 
 struct PLAYER p1 = { 3, 4 };
 struct PLAYER p2 = { 16, 4 };
-struct PLAYER com = { 3, 4 };
+struct ITEM Item_P1 = { 1, 2, 1, 1, 0 };
+struct ITEM Item_P2 = { 1, 2, 1, 1, 0 };
 
 BOOL MAKE_SHIP = TRUE;
+BOOL ITEM_USE = FALSE;
 
 int PLAYER1_MAP[MAX][MAX] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -44,5 +48,12 @@ int COMPUTER_MAP[MAX][MAX] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 int number = 4; // 맵배치를 위한 몸통 SHIP 갯수 
 
+int Victory_p1 = 0;
+int Victory_p2 = 0;
+
+ITEM_INFO = NO_ITEM;
+FINISH = FALSE;
+
 struct PLAYER *p = &p1;									// 구조체 포인터를 통해 필요할 때 플레이어 정보 사용가능
+struct ITEM *P_ITEM = &Item_P1;
 int(*PLAYER_WHO)[MAX] = PLAYER1_MAP;		// 배열 포인터를 통해 필요할 때 플레이어 맵 이름 사용가능.
